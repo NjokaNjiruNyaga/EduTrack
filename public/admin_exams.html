@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EduTrack | Manage Exams</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>EduTrack</h2>
+      <ul>
+        <li><a href="admin_dashboard.html">👤 Manage Users</a></li>
+        <li><a href="admin_students.html">🎓 Manage Students</a></li>
+        <li><a href="admin_subject.html">📚 Manage Subjects</a></li>
+        <li><a href="admin_exams.html" class="active">📝 Manage Exams</a></li>
+        <li><a href="#">⚙️ Settings</a></li>
+        <li><a href="login.html">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header>
+        <h1>Manage Exams</h1>
+      </header>
+
+      <!-- Add / Edit Exam -->
+      <div class="card">
+        <h3 id="formTitle">Add New Exam</h3>
+        <form id="examForm">
+          <input type="hidden" id="exam_id">
+
+          <!-- School ID -->
+          <input type="number" id="school_id" required placeholder="Enter School ID">
+
+          <!-- Exam Type -->
+          <select id="exam_type" required>
+            <option value=""disabled selected>Select Exam Type</option>
+            <option value="Opener">Opener</option>
+            <option value="Midterm">Midterm</option>
+            <option value="Endterm">Endterm</option>
+          </select>
+
+          <!-- Term -->
+          <input type="number" id="exam_term" required placeholder="Enter Term (1, 2, 3)">
+
+          <!-- Buttons -->
+          <div class="form-buttons">
+            <button type="submit" class="btn-add">Save Exam</button>
+            <button type="button" id="cancelEdit" class="btn-cancel" style="display:none;">Cancel Edit</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Exams Table -->
+      <div class="card">
+        <h3>Exams List</h3>
+        <table id="examsTable">
+          <thead>
+            <tr>
+              <th>Exam ID</th>
+              <th>School ID</th>
+              <th>Exam Type</th>
+              <th>Term</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/adminexams.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EduTrack | Manage Subjects</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>EduTrack</h2>
+      <ul>
+      <li><a href="admin_dashboard.html">👤 Manage Users</a></li>
+        <li><a href="admin_students.html">🎓 Manage Students</a></li>
+        <li><a href="admin_subject.html">📚 Manage Subjects</a></li>
+        <li><a href="admin_exams.html" class="active">📝 Manage Exams</a></li>
+        <li><a href="#">⚙️ Settings</a></li>
+        <li><a href="login.html">🚪 Logout</a></li>
+
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header>
+        <h1>Manage Subjects</h1>
+      </header>
+
+      <!-- Add Subject -->
+      <div class="card">
+        <h3>Add New Subject</h3>
+        <form id="addSubjectForm">
+          <input type="text" id="subject_name" placeholder="Subject Name" required>
+          <input type="number" id="grade_from" placeholder="Grade From" min="1" max="9" required>
+          <input type="number" id="grade_to" placeholder="Grade To" min="1" max="9" required>
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="Core">Core</option>
+            <option value="Optional">Optional</option>
+          </select>
+          <select id="status" required>
+            <option value="">Select Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <button type="submit" class="btn-add">Add Subject</button>
+        </form>
+      </div>
+
+      <!-- Subjects Table -->
+      <div class="card">
+        <h3>Subjects List</h3>
+        <table id="subjectsTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Subject Name</th>
+              <th>Grade From</th>
+              <th>Grade To</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Edit Subject -->
+      <div id="editSubjectSection" class="card" style="display:none;">
+        <h3>Edit Subject</h3>
+        <form id="editSubjectForm">
+          <input type="hidden" id="edit_subject_id">
+          <input type="text" id="edit_subject_name" placeholder="Subject Name" required>
+          <input type="number" id="edit_grade_from" min="1" max="9" required>
+          <input type="number" id="edit_grade_to" min="1" max="9" required>
+          <select id="edit_category" required>
+            <option value="Core">Core</option>
+            <option value="Optional">Optional</option>
+          </select>
+          <select id="edit_status" required>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <div class="edit-buttons">
+            <button type="submit" class="btn-edit">Update</button>
+            <button type="button" onclick="cancelSubjectEdit()" class="btn-cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/adminsubject.js"></script>
+</body>
+</html>

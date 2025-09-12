@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EduTrack | Login</title>
+  <link rel="stylesheet" href="css/login-style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Dynamic school name will be loaded here -->
+    <h1 id="schoolName">EduTrack Login</h1>
+    <p id="schoolMessage">Loading school details...</p>
+
+    <!-- Login form -->
+    <form id="loginForm" method="POST">
+      <input type="text" name="username" placeholder="Enter Username" required>
+      <input type="password" name="password" placeholder="Enter Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    // Extract school_id from URL query (e.g., login.html?school_id=1)
+    const params = new URLSearchParams(window.location.search);
+    const schoolId = params.get("school_id");
+
+    if (!schoolId) {
+      document.getElementById("schoolMessage").innerText = "❌ No school selected. Go back and choose a school.";
+      document.getElementById("loginForm").style.display = "none";
+    } else {
+      // Fetch school details from backend (full URL with port 5000)
+      fetch(`http://localhost:5000/schools/${schoolId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.school_name) {
+            document.getElementById("schoolName").innerText = `Welcome to ${data.school_name}`;
+            document.getElementById("schoolMessage").innerText = "Please log in to continue.";
+          } else {
+            document.getElementById("schoolMessage").innerText = "❌ School not found.";
+            document.getElementById("loginForm").style.display = "none";
+          }
+        })
+        .catch(err => {
+          console.error("Error fetching school:", err);
+          document.getElementById("schoolMessage").innerText = "⚠️ Could not load school details.";
+        });
+
+      // Handle login form submission
+      document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = {
+          username: e.target.username.value,
+          password: e.target.password.value,
+          school_id: schoolId
+        };
+
+        try {
+          // Send login request (full URL with port 5000)
+          const res = await fetch("http://localhost:5000/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+          });
+
+          console.log("Response status:", res.status);   // debugging
+          const result = await res.json();
+          console.log("Login result:", result);          // debugging
+
+          if (res.ok) {
+            alert(`✅ Login successful. Redirecting to ${result.role} dashboard...`);
+            window.location.href = `/${result.role}_dashboard.html`;
+          } else {
+            alert("❌ " + result.message);
+          }
+        } catch (err) {
+          console.error("Login error:", err);
+          alert("⚠️ Could not connect to server.");
+        }
+      });
+    }
+  </script>
+</body>
+</html>

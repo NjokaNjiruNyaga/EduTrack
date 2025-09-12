@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EduTrack</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h2 class="logo">EduTrack</h2>
+  </header>
+
+  <!-- Main container -->
+  <main>
+    <div class="card">
+      <h1>Welcome to EduTrack!</h1>
+      <p>Please select your school</p>
+
+      <!-- School selection form -->
+      <form action="login.html" method="get">
+       
+        <select name="school_id" id="schoolSelect" required>
+          <option value=""> Select School </option>
+        </select>
+        <button type="submit">Continue</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Script to load schools dynamically -->
+  <script>
+    // Fetch school list from backend dynamically
+    fetch('/schools')
+      .then(res => res.json())
+      .then(data => {
+        const select = document.getElementById('schoolSelect');
+        data.forEach(school => {
+          const option = document.createElement('option');
+          option.value = school.school_id;        // school ID in DB
+          option.textContent = school.school_name; // display name
+          select.appendChild(option);
+        });
+      })
+      .catch(err => console.error('Error loading schools:', err));
+  </script>
+</body>
+</html>

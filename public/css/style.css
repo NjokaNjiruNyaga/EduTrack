@@ -1,0 +1,100 @@
+ /*Gives a clean font  */
+body, h1, h2, p, form {
+    margin:0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+
+}
+
+/* Background */
+body{
+    background: url("./");
+    display:flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+/* The Edutrack logo */
+header{
+    background: #2c3e50;
+    padding: 1rem 2rem;
+    color:white;
+
+}
+header .logo{
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+ /* Center card placement  */
+ /* Ensure the card is place in the center */
+ main{
+    flex: 1;      /* take all space except header   */
+    display: flex;
+    justify-content: center;     /*horizontal */
+    align-items: center;   
+    
+ }
+ /* Card container */
+ .card {
+    background: white;
+    padding: 2rem 3rem;
+    border-radius:10px ;  /*round coners */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15); /* soft shadows */
+    text-align: center;    /* center text inside*/
+    width: 400px;   /* fixed width*/
+
+ }
+ /* Card heading  Welcome----*/
+  .card h1 {
+    margin-bottom: 0.5 rem;
+    font-size:1.5 rem;
+    color: #2c3e50; /* dark text color*/
+ } 
+ /* sub-message Please--*/
+ .card p{
+        margin-bottom: 1.5rem;
+        color:#555;     
+        font-size: 0.95rem;
+
+}
+/* /* label, select, button spaces btwn them  */
+ form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+ }
+ form label{
+    text-align: left;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color:#333;
+ }
+ /* Dropdown selection */
+ form select{
+    padding: 0.7rem;
+    font-size: 1 rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    
+ }
+ /* continue button */
+ form button{
+    padding:0.7rem;
+    font-size: 1.1rem;
+    background: #27ae60;
+    color:white;
+    border:none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease; /* smooth hover effect */
+
+ }
+ /* Button hover effect */
+ form button:hover {
+    background:#1e8449; 
+ }
+
+ 
