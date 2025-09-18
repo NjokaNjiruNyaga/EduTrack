@@ -2,24 +2,35 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
-// -------------------- GET ALL SUBJECTS --------------------
+// -------------------- GET ALL SUBJECTS WITH SEARCH & PAGINATION --------------------
 router.get('/', (req, res) => {
-  const { grade } = req.query;
+  let { search, page, limit } = req.query;
+  page = parseInt(page) || 1;
+  limit = parseInt(limit) || 10;
+  const offset = (page - 1) * limit;
 
-  let sql = 'SELECT * FROM subjects';
-  let params = [];
+  let baseSql = 'SELECT * FROM subjects';
+  let countSql = 'SELECT COUNT(*) as total FROM subjects';
+  const params = [];
 
-  // If grade filter is provided
-  if (grade) {
-    sql += ' WHERE grade_from <= ? AND grade_to >= ? AND status="active"';
-    params = [grade, grade];
+  if (search) {
+    search = `%${search}%`;
+    baseSql += ' WHERE subject_name LIKE ? OR category LIKE ? OR grade_from LIKE ? OR grade_to LIKE ?';
+    countSql += ' WHERE subject_name LIKE ? OR category LIKE ? OR grade_from LIKE ? OR grade_to LIKE ?';
+    params.push(search, search, search, search, search, search, search, search);
   }
 
-  sql += ' ORDER BY subject_id';
+  baseSql += ' ORDER BY subject_id LIMIT ? OFFSET ?';
+  params.push(limit, offset);
 
-  db.query(sql, params, (err, results) => {
+  db.query(baseSql, params, (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
+
+    db.query(countSql, search ? [search, search, search, search, search, search, search, search] : [], (err2, countResult) => {
+      if (err2) return res.status(500).json({ error: err2.message });
+      const total = countResult[0].total;
+      res.json({ data: results, total, page, limit });
+    });
   });
 });
 

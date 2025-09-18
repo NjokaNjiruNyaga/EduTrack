@@ -19,7 +19,6 @@
         <li><a href="admin_exams.html" class="active">📝 Manage Exams</a></li>
         <li><a href="#">⚙️ Settings</a></li>
         <li><a href="login.html">🚪 Logout</a></li>
-
       </ul>
     </aside>
 
@@ -38,10 +37,10 @@
           <input type="date" id="date_of_birth" required>
           <select id="gender" required>
             <option value="">Select Gender</option>
-            <option value="Male">Male</option>   <!-- ✅ matches DB -->
+            <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
-          <input type="number" id="grade" placeholder="Grade/Class" required> <!-- ✅ number input -->
+          <input type="number" id="grade" placeholder="Grade/Class" required>
           <input type="text" id="stream" placeholder="Stream" required>
           <input type="text" id="parent_contact" placeholder="Parent Contact" required>
           <button type="submit" class="btn-add">Add Student</button>
@@ -51,6 +50,10 @@
       <!-- Students Table -->
       <div class="card">
         <h3>Students List</h3>
+
+        <!-- Search bar -->
+        <input type="text" id="searchStudent" placeholder="Search by name, admission no, grade or stream..." />
+
         <table id="studentsTable">
           <thead>
             <tr>
@@ -68,6 +71,9 @@
           </thead>
           <tbody></tbody>
         </table>
+
+        <!-- Pagination -->
+        <div id="pagination"></div>
       </div>
 
       <!-- Edit Student -->
@@ -79,10 +85,10 @@
           <input type="text" id="edit_admission_no" required>
           <input type="date" id="edit_date_of_birth" required>
           <select id="edit_gender" required>
-            <option value="Male">Male</option>   <!-- ✅ matches DB -->
+            <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
-          <input type="number" id="edit_grade" required> <!-- ✅ number input -->
+          <input type="number" id="edit_grade" required>
           <input type="text" id="edit_stream" required>
           <input type="text" id="edit_parent_contact" required>
           <select id="edit_status">
@@ -95,11 +101,10 @@
           </div>
         </form>
       </div>
+
     </main>
   </div>
 
- <script src="js/adminstudent.js"></script>
-
-
+  <script src="js/adminstudent.js"></script>
 </body>
 </html>

@@ -13,13 +13,12 @@
     <aside class="sidebar">
       <h2>EduTrack</h2>
       <ul>
-      <li><a href="admin_dashboard.html">👤 Manage Users</a></li>
+        <li><a href="admin_dashboard.html">👤 Manage Users</a></li>
         <li><a href="admin_students.html">🎓 Manage Students</a></li>
-        <li><a href="admin_subject.html">📚 Manage Subjects</a></li>
-        <li><a href="admin_exams.html" class="active">📝 Manage Exams</a></li>
+        <li><a href="admin_subject.html" class="active">📚 Manage Subjects</a></li>
+        <li><a href="admin_exams.html">📝 Manage Exams</a></li>
         <li><a href="#">⚙️ Settings</a></li>
         <li><a href="login.html">🚪 Logout</a></li>
-
       </ul>
     </aside>
 
@@ -53,6 +52,10 @@
       <!-- Subjects Table -->
       <div class="card">
         <h3>Subjects List</h3>
+
+        <!-- Search bar -->
+        <input type="text" id="searchSubject" placeholder="Search by name, category, or grade..." />
+
         <table id="subjectsTable">
           <thead>
             <tr>
@@ -67,6 +70,9 @@
           </thead>
           <tbody></tbody>
         </table>
+
+        <!-- Pagination -->
+        <div id="pagination"></div>
       </div>
 
       <!-- Edit Subject -->

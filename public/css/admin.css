@@ -191,3 +191,50 @@ button.delete {
   padding:8px;
   border:1px solid #ddd;
 }
+/* Search Bar */
+/* Search Bar (applies to both Users & Students) */
+#searchUser,
+#searchStudent,
+#searchSubject,
+#searchExam{
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+/* Focus effect */
+#searchUser:focus,
+#searchStudent:focus,
+#searchSubject:focus,
+#searchExam:focus{
+  border-color: #2980b9;
+  box-shadow: 0 0 5px rgba(41, 128, 185, 0.4);
+}
+
+
+/* Pagination */
+#pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+#pagination button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#pagination button.active {
+  background-color: #1c5980;
+}

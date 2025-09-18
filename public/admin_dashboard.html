@@ -14,9 +14,9 @@
       <h2>EduTrack</h2>
       <ul>
         <li><a href="#" onclick="showSection('users')">👤 Manage Users</a></li>
-         <li><a href="admin_students.html">🎓 Manage Students</a></li>
-         <li><a href="admin_subject.html">📚 Manage Subjects</a></li>
-         <li><a href="admin_exams.html">📝 Manage Exams</a></li>
+        <li><a href="admin_students.html">🎓 Manage Students</a></li>
+        <li><a href="admin_subject.html">📚 Manage Subjects</a></li>
+        <li><a href="admin_exams.html">📝 Manage Exams</a></li>
         <li><a href="#">⚙️ Settings</a></li>
         <li><a href="login.html">🚪 Logout</a></li>
       </ul>
@@ -37,13 +37,17 @@
           <h3>Add New User</h3>
           <form id="addUserForm">
             <input type="text" id="username" placeholder="Username" required>
+            <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="password" placeholder="Password" required>
+            
             <select id="role" required>
+              <option value="">-- Select Role --</option>
               <option value="teacher">Teacher</option>
               <option value="parent">Parent</option>
               <option value="student">Student</option>
               <option value="admin">School Admin</option>
             </select>
+
             <input type="number" id="school_id" placeholder="School ID" required>
             <button type="submit" class="btn-add">Add User</button>
           </form>
@@ -52,11 +56,14 @@
         <!-- Users Table -->
         <div class="card">
           <h3>Users List</h3>
+          <input type="text" id="searchUser" placeholder="Search by name, email, or role..." />
+          
           <table id="usersTable">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Username</th>
+                <th>Email</th>
                 <th>Role</th>
                 <th>School</th>
                 <th>Actions</th>
@@ -64,6 +71,7 @@
             </thead>
             <tbody></tbody>
           </table>
+          <div id="pagination"></div>
         </div>
 
         <!-- Edit User -->
@@ -71,14 +79,19 @@
           <h3>Edit User</h3>
           <form id="editUserForm">
             <input type="hidden" id="edit_user_id">
-            <input type="text" id="edit_username" required>
+            <input type="text" id="edit_username" placeholder="Username" required>
+            <input type="email" id="edit_email" placeholder="Email" required>
+
             <select id="edit_role" required>
+              <option value="">-- Select Role --</option>
               <option value="teacher">Teacher</option>
               <option value="parent">Parent</option>
               <option value="student">Student</option>
               <option value="admin">School Admin</option>
             </select>
-            <input type="number" id="edit_school_id" required>
+
+            <input type="number" id="edit_school_id" placeholder="School ID" required>
+            
             <div class="edit-buttons">
               <button type="submit" class="btn-edit">Update</button>
               <button type="button" onclick="cancelEdit()" class="btn-cancel">Cancel</button>
@@ -86,33 +99,26 @@
           </form>
         </div>
       </section>
-      <!--Status Section-->
-      <!--Status Section-->
-<div class="stats">
-  <div class="stat-card">
-    <p>👤 Total Users</p>
-    <h3 id="totalUsers">0</h3> 
-  </div>
-  <div class="stat-card">
-    <p>🎓 Total Students</p>
-    <h3 id="totalStudents">0</h3>
-  </div>
-  <div class="stat-card">
-    <p>👩‍🏫 Total Teachers</p>
-    <h3 id="totalTeachers">0</h3>
-  </div>
-  <div class="stat-card">
-    <p>👨‍👩‍👦 Total Parents</p>
-    <h3 id="totalParents">0</h3>
-  </div>
-  
 
-      <!-- Students Section (future use) -->
-      <section id="students" class="content-section" style="display:none;">
-        <h2>Manage Students</h2>
-        <p>Student management will go here.</p>
-      </section>
-
+      <!-- Dashboard Stats -->
+      <div class="stats">
+        <div class="stat-card">
+          <p>👤 Total Users</p>
+          <h3 id="totalUsers">0</h3> 
+        </div>
+        <div class="stat-card">
+          <p>🎓 Total Students</p>
+          <h3 id="totalStudents">0</h3>
+        </div>
+        <div class="stat-card">
+          <p>👩‍🏫 Total Teachers</p>
+          <h3 id="totalTeachers">0</h3>
+        </div>
+        <div class="stat-card">
+          <p>👨‍👩‍👦 Total Parents</p>
+          <h3 id="totalParents">0</h3>
+        </div>
+      </div>
     </main>
   </div>
 

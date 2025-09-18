@@ -10,7 +10,7 @@ router.post("/", (req, res) => {
     return res.status(400).json({ message: "⚠️ All fields are required" });
   }
 
-  // 🔍 Check if admission_no already exists
+  // Check if admission_no already exists
   const checkSql = "SELECT * FROM students WHERE admission_no = ?";
   db.query(checkSql, [admission_no], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -19,30 +19,47 @@ router.post("/", (req, res) => {
       return res.status(400).json({ message: "⚠️ A student with this admission number already exists" });
     }
 
-    // ✅ Insert new student (user_id can be NULL if not provided)
+    // Insert new student
     const sql = `
       INSERT INTO students 
       (name, admission_no, date_of_birth, gender, grade, stream, parent_contact, status, user_id, created_at) 
       VALUES (?, ?, ?, ?, ?, ?, ?, 'active', ?, NOW())
     `;
-
-    db.query(
-      sql,
-      [name, admission_no, date_of_birth, gender, grade, stream, parent_contact, user_id || null],
-      (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: "✅ Student added successfully", studentId: result.insertId });
-      }
-    );
+    db.query(sql, [name, admission_no, date_of_birth, gender, grade, stream, parent_contact, user_id || null], (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "✅ Student added successfully", studentId: result.insertId });
+    });
   });
 });
 
-// ========== GET ALL STUDENTS ==========
+// ========== GET ALL STUDENTS WITH SEARCH & PAGINATION ==========
 router.get("/", (req, res) => {
-  const sql = "SELECT * FROM students ORDER BY created_at DESC";
-  db.query(sql, (err, results) => {
+  let { search, page, limit } = req.query;
+  page = parseInt(page) || 1;
+  limit = parseInt(limit) || 10;
+  const offset = (page - 1) * limit;
+
+  let baseSql = "SELECT * FROM students";
+  let countSql = "SELECT COUNT(*) as total FROM students";
+  const params = [];
+  if (search) {
+    search = `%${search}%`;
+    baseSql += " WHERE name LIKE ? OR admission_no LIKE ? OR stream LIKE ?";
+    countSql += " WHERE name LIKE ? OR admission_no LIKE ? OR stream LIKE ?";
+    params.push(search, search, search, search, search, search);
+  }
+
+  baseSql += " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+  params.push(limit, offset);
+
+  db.query(baseSql, params, (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
+
+    db.query(countSql, search ? [search, search, search] : [], (err2, countResult) => {
+      if (err2) return res.status(500).json({ error: err2.message });
+      const total = countResult[0].total;
+      res.json({ data: results, total, page, limit });
+    });
   });
 });
 
@@ -67,14 +84,10 @@ router.put("/:id", (req, res) => {
     WHERE id = ?
   `;
 
-  db.query(
-    sql,
-    [name, admission_no, date_of_birth, gender, grade, stream, parent_contact, status, user_id || null, req.params.id],
-    (err) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ message: "✅ Student updated successfully" });
-    }
-  );
+  db.query(sql, [name, admission_no, date_of_birth, gender, grade, stream, parent_contact, status, user_id || null, req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: "✅ Student updated successfully" });
+  });
 });
 
 // ========== DELETE STUDENT ==========
