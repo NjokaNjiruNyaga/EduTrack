@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EduTrack | Student Profile</title>
+  <link rel="stylesheet" href="/css/student_profile.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>EduTrack</h2>
+    <ul>
+      <li><a href="student_dashboard.html">📊 My Report</a></li>
+      <li><a href="student_profile.html" class="active">👤 My Profile</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </aside>
+
+  <main class="profile-content">
+    <section class="profile-header">
+      <div class="avatar" id="avatar">👤</div>
+      <div class="info">
+        <h1 id="studentName">Loading...</h1>
+        <p><strong>Adm No:</strong> <span id="adm"></span></p>
+        <p><strong>Grade:</strong> <span id="grade"></span></p>
+        <p><strong>Gender:</strong> <span id="gender"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <p><strong>Parent Contact:</strong> <span id="parent"></span></p>
+
+      </div>
+    </section>
+
+    <section class="password-section">
+      <h2>Change Password</h2>
+      <form id="passwordForm">
+        <label>Current Password</label>
+        <input type="password" id="currentPassword" required>
+
+        <label>New Password</label>
+        <input type="password" id="newPassword" required>
+
+        <button type="submit">Update Password</button>
+      </form>
+      <p id="statusMsg"></p>
+    </section>
+  </main>
+
+  <script src="/js/student_profile.js"></script>
+  <script src="/js/logout.js"></script>
+</body>
+</html>

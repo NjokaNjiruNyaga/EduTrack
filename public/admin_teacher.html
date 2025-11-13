@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EduTrack | Manage Teachers</title>
+  <link rel="stylesheet" href="../css/admin.css">
+  <style>
+    /* Tooltips for validation */
+    input:invalid { border-color: red; }
+    .tooltip { font-size: 0.85em; color: red; display: none; }
+    .highlight { background-color: #ffffcc; }
+    table tbody tr.highlight { background-color: #ffffcc; }
+    .message { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>EduTrack</h2>
+      <ul>
+        <li><a href="admin_dashboard.html">👤 Manage Users</a></li>
+        <li><a href="admin_students.html">👨‍🎓 Manage Students</a></li>
+        <li><a href="admin_subject.html">📚 Manage Subjects</a></li>
+        <li><a href="admin_exams.html">📝 Manage Exams</a></li>
+        <li><a href="admin_teacher.html" class="active">👩‍🏫 Manage Teachers</a></li>
+        <li><a href="#">⚙️ Settings</a></li>
+        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header>
+        <h1>Manage Teachers</h1>
+      </header>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="teachers">Teachers</button>
+        <button class="tab-btn" data-tab="subjects">Teacher Subjects</button>
+        <button class="tab-btn" data-tab="class">Class Teachers</button>
+      </div>
+
+      <!-- Teachers Tab -->
+      <div class="tab-content active" id="teachers">
+        <div class="card">
+          <h3>Add Teacher</h3>
+          <form id="addTeacherForm">
+            <select id="user_id" name="user_id" required>
+              <option value="">-- Select Teacher --</option>
+            </select>
+            <input type="text" id="phone" placeholder="Phone Number" required pattern="\d{10}">
+            <span class="tooltip" id="phoneTooltip">Enter 10-digit number</span>
+            <button type="submit" class="btn-add">Add Teacher</button>
+          </form>
+          <p class="message" id="addTeacherMessage"></p>
+        </div>
+
+        <div class="card">
+          <h3>Teachers List</h3>
+          <input type="text" id="teacherSearch" placeholder="Search by username, email, or phone">
+          <table id="teachersTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="message" id="teachersListMessage"></p>
+        </div>
+
+        <!-- EDIT TEACHER FORM -->
+        <div class="card" id="editTeacherCard" style="display:none; margin-top:20px;">
+          <h3>Edit Teacher</h3>
+          <form id="editTeacherForm">
+            <input type="hidden" id="edit_teacher_id">
+            <input type="text" id="edit_username" required>
+            <input type="email" id="edit_email" required>
+            <input type="text" id="edit_phone" pattern="\d{10}">
+            <span class="tooltip" id="editPhoneTooltip">Enter 10-digit number</span>
+            <button type="submit" class="btn-add">Update</button>
+            <button type="button" onclick="cancelEdit()">Cancel</button>
+          </form>
+          <p class="message" id="editTeacherMessage"></p>
+        </div>
+      </div>
+
+      <!-- Subjects Tab -->
+      <div class="tab-content" id="subjects">
+        <div class="card">
+          <h3>Assign Subject</h3>
+          <form id="assignSubjectForm">
+            <select id="teacher_id_subject" required>
+              <option value="">-- Select Teacher --</option>
+            </select>
+            <input type="text" id="gradeFilter" placeholder="Type grade number to filter..." />
+            <select id="grade_id_subject" required>
+              <option value="">-- Select Grade --</option>
+            </select>
+            <select id="subject_id" required>
+              <option value="">-- Select Subject --</option>
+            </select>
+            <button type="submit" class="btn-add">Assign</button>
+          </form>
+          <p class="message" id="assignSubjectMessage"></p>
+        </div>
+
+        <div class="card">
+          <h3>Teacher–Subjects List</h3>
+          <table id="teacherSubjectsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Teacher</th>
+                <th>Grade</th>
+                <th>Subject</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- EDIT TEACHER-SUBJECT FORM -->
+        <div class="card" id="editSubjectCard" style="display:none; margin-top:20px;">
+          <h3>Edit Teacher-Subject</h3>
+          <form id="editSubjectForm">
+            <input type="hidden" id="edit_subject_id">
+            
+            <select id="edit_teacher_id_subject_modal" required></select>
+          
+            <select id="edit_grade_id_subject_modal" required></select>
+
+            <select id="edit_subject_id_modal" required></select>
+            <button type="submit" class="btn-add">Update</button>
+            <button type="button" onclick="document.getElementById('editSubjectCard').style.display='none'">Cancel</button>
+          </form>
+          <p class="message" id="editSubjectMessage"></p>
+        </div>
+      </div>
+
+      <!-- Class Teachers Tab -->
+      <div class="tab-content" id="class">
+        <div class="card">
+          <h3>Assign Class Teacher</h3>
+          <form id="assignClassForm">
+            <select id="teacher_id_class" required>
+              <option value="">-- Select Teacher --</option>
+            </select>
+            <input type="text" id="classTeacherSearch" placeholder="Type grade number to filter...">
+            <select id="grade_id_class" required>
+              <option value="">-- Select Grade --</option>
+            </select>
+            <button type="submit" class="btn-add">Assign</button>
+          </form>
+          <p class="message" id="assignClassMessage"></p>
+        </div>
+
+        <div class="card">
+          <h3>Class Teachers List</h3>
+          <table id="classTeacherTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Teacher</th>
+                <th>Grade</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- EDIT CLASS TEACHER FORM -->
+        <div class="card" id="editClassTeacherCard" style="display:none; margin-top:20px;">
+          <h3>Edit Class Teacher</h3>
+          <form id="editClassTeacherForm">
+            <input type="hidden" id="edit_class_id">
+            <select id="edit_teacher_id_class" required></select>
+            <select id="edit_grade_id_class" required></select>
+            <button type="submit" class="btn-add">Update</button>
+            <button type="button" onclick="cancelEditClass()">Cancel</button>
+          </form>
+          <p class="message" id="editClassMessage"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/adminteacher.js"></script>
+  <script src="js/logout.js"></script>
+</body>
+</html>

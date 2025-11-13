@@ -17,8 +17,9 @@
         <li><a href="admin_students.html">🎓 Manage Students</a></li>
         <li><a href="admin_subject.html">📚 Manage Subjects</a></li>
         <li><a href="admin_exams.html">📝 Manage Exams</a></li>
+        <li><a href="admin_teacher.html">👩‍🏫 Manage Teachers</a></li>
         <li><a href="#">⚙️ Settings</a></li>
-        <li><a href="login.html">🚪 Logout</a></li>
+        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
       </ul>
     </aside>
 
@@ -48,7 +49,6 @@
               <option value="admin">School Admin</option>
             </select>
 
-            <input type="number" id="school_id" placeholder="School ID" required>
             <button type="submit" class="btn-add">Add User</button>
           </form>
         </div>
@@ -90,8 +90,6 @@
               <option value="admin">School Admin</option>
             </select>
 
-            <input type="number" id="edit_school_id" placeholder="School ID" required>
-            
             <div class="edit-buttons">
               <button type="submit" class="btn-edit">Update</button>
               <button type="button" onclick="cancelEdit()" class="btn-cancel">Cancel</button>
@@ -122,12 +120,16 @@
     </main>
   </div>
 
+  <!-- Scripts -->
   <script src="js/adminDashboard.js"></script>
+  <script src="js/logout.js"></script>
+
   <script>
     function showSection(sectionId) {
       document.querySelectorAll(".content-section").forEach(sec => sec.style.display = "none");
       document.getElementById(sectionId).style.display = "block";
     }
+
   </script>
 </body>
 </html>

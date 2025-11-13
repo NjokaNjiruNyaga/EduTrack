@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EduTrack | Student Dashboard</title>
+  <link rel="stylesheet" href="/css/student.css" />
+</head>
+<body>
+  <div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>EduTrack</h2>
+      <ul>
+       <li><a href="student_dashboard.html" class="active">📊 My Report</a></li>
+        <li><a href="student_profile.html">👤 My Profile</a></li>
+        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <div id="headerBox" class="header-box">
+        <h1 id="welcomeMsg">Welcome Back 👋</h1>
+        <p id="termInfo">Loading term...</p>
+      </div>
+
+      <!-- Report Section -->
+      <section class="report">
+        <h2>📋 Your Academic Report</h2>
+        <div id="summaryBox" class="summary-card"></div>
+
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th class="col-opener">Opener</th>
+              <th class="col-midterm">Midterm</th>
+              <th class="col-endterm">Endterm</th>
+              <th>Grade</th>
+              <th>Rank</th>
+              <th>Teacher</th>
+            </tr>
+          </thead>
+          <tbody id="subjectBody"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/studentDashboard.js"></script>
+  <script src="../js/logout.js"></script>
+</body>
+</html> 

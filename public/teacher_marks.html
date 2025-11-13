@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduTrack | Enter Marks</title>
+  <link rel="stylesheet" href="../css/teacher.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>EduTrack</h2>
+    <ul>
+      <li><a href="teacher_dashboard.html">🏠 Home</a></li>
+      <li><a href="teacher_marks.html" class="active">📝 Enter Marks</a></li>
+      <li><a href="teacher_student_overview.html">👩‍🎓 Performance Overview</a></li>
+      <li><a href="teacher_analytics.html">📊 Subject Analytics</a></li>
+      <li><a href="teacher_class_analytics.html">🏫 Class Analytics</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+      
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header class="topbar">
+      <h1>Enter Student Marks</h1>
+    </header>
+
+    <div class="marks-card">
+      <h2>🧾 Marks Entry Panel</h2>
+
+      <!-- Selection Form -->
+      <div class="form-row">
+        <div class="form-group">
+          <select id="examType" class="form-control">
+            <option value="">Select Exam Type</option>
+            <option value="Opener">Opener</option>
+            <option value="Midterm">Midterm</option>
+            <option value="Endterm">Endterm</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <select id="termSelect" class="form-control">
+            <option value="">Select Term</option>
+            <option value="1">Term 1</option>
+            <option value="2">Term 2</option>
+            <option value="3">Term 3</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <select id="subjectSelect" class="form-control">
+            <option value="">Loading...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <select id="gradeSelect" class="form-control">
+            <option value="">Select Grade</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="align-self:flex-end;">
+          <button id="loadStudentsBtn" class="btn-primary">📋 Load Students</button>
+        </div>
+      </div>
+
+      <!-- Students Table -->
+      <table id="marksTable" class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student Name</th>
+            <th>Admission No.</th>
+            <th>Marks</th>
+            <th>Level</th>
+            <th>Points</th>
+            <th>Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="7" style="text-align:center;">Select details above to load students.</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Summary Box -->
+      <div class="summary-box">
+        <p><strong>📊 Class Average:</strong> <span id="classAverage">-</span></p>
+        <p><strong>🏆 Highest Mark:</strong> <span id="highestMark">-</span></p>
+        <p><strong>📉 Lowest Mark:</strong> <span id="lowestMark">-</span></p>
+        <p><strong>👥 Students Count:</strong> <span id="studentCount">-</span></p>
+      </div>
+
+      <!-- Save Button -->
+      <div class="buttons">
+        <button id="saveMarksBtn" class="btn-success">💾 Save Marks</button>
+      </div>
+
+      <p id="message"></p>
+    </div>
+  </div>
+</div>
+
+<script src="../js/teachermarks.js"></script>
+<script src="../js/logout.js"></script>
+</body>
+</html>

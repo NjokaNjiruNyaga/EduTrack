@@ -4,10 +4,19 @@ const rowsPerPage = 5;
 
 // -------------------- FETCH SUBJECTS --------------------
 async function loadSubjects() {
-  const res = await fetch('/subjects'); // backend route
-  subjectsData = await res.json();
-  currentPage = 1;
-  displaySubjects();
+  try {
+    // Request all subjects from backend
+    const res = await fetch('/subjects?limit=1000'); // large limit to get all
+    const response = await res.json();
+    console.log("📌 Subjects API Response:", response);
+
+    // Store data
+    subjectsData = response.data || response;
+    currentPage = 1;
+    displaySubjects();
+  } catch (error) {
+    console.error("Error fetching subjects:", error);
+  }
 }
 
 // -------------------- DISPLAY SUBJECTS WITH SEARCH & PAGINATION --------------------
@@ -15,7 +24,7 @@ function displaySubjects(searchText = '') {
   const tbody = document.querySelector('#subjectsTable tbody');
   tbody.innerHTML = '';
 
-  // Filter based on search input
+  // Filter subjects based on search
   const filtered = subjectsData.filter(sub =>
     sub.subject_name.toLowerCase().includes(searchText.toLowerCase()) ||
     sub.category.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -81,33 +90,41 @@ document.getElementById('addSubjectForm').addEventListener('submit', async e => 
   e.preventDefault();
   const subject = {
     subject_name: document.getElementById('subject_name').value,
-    grade_from: document.getElementById('grade_from').value,
-    grade_to: document.getElementById('grade_to').value,
+    grade_from: parseInt(document.getElementById('grade_from').value),
+    grade_to: parseInt(document.getElementById('grade_to').value),
     category: document.getElementById('category').value,
     status: document.getElementById('status').value
   };
-  await fetch('/subjects', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(subject)
-  });
-  e.target.reset();
-  loadSubjects();
+  try {
+    await fetch('/subjects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subject)
+    });
+    e.target.reset();
+    await loadSubjects(); // reload all subjects
+  } catch (error) {
+    console.error("Error adding subject:", error);
+  }
 });
 
 // -------------------- EDIT SUBJECT --------------------
 async function editSubject(id) {
-  const res = await fetch(`/subjects/${id}`);
-  const subject = await res.json();
+  try {
+    const res = await fetch(`/subjects/${id}`);
+    const subject = await res.json();
 
-  document.getElementById('edit_subject_id').value = subject.subject_id;
-  document.getElementById('edit_subject_name').value = subject.subject_name;
-  document.getElementById('edit_grade_from').value = subject.grade_from;
-  document.getElementById('edit_grade_to').value = subject.grade_to;
-  document.getElementById('edit_category').value = subject.category;
-  document.getElementById('edit_status').value = subject.status;
+    document.getElementById('edit_subject_id').value = subject.subject_id;
+    document.getElementById('edit_subject_name').value = subject.subject_name;
+    document.getElementById('edit_grade_from').value = subject.grade_from;
+    document.getElementById('edit_grade_to').value = subject.grade_to;
+    document.getElementById('edit_category').value = subject.category;
+    document.getElementById('edit_status').value = subject.status;
 
-  document.getElementById('editSubjectSection').style.display = 'block';
+    document.getElementById('editSubjectSection').style.display = 'block';
+  } catch (error) {
+    console.error("Error fetching subject:", error);
+  }
 }
 
 // -------------------- UPDATE SUBJECT --------------------
@@ -116,18 +133,22 @@ document.getElementById('editSubjectForm').addEventListener('submit', async e =>
   const id = document.getElementById('edit_subject_id').value;
   const updatedSubject = {
     subject_name: document.getElementById('edit_subject_name').value,
-    grade_from: document.getElementById('edit_grade_from').value,
-    grade_to: document.getElementById('edit_grade_to').value,
+    grade_from: parseInt(document.getElementById('edit_grade_from').value),
+    grade_to: parseInt(document.getElementById('edit_grade_to').value),
     category: document.getElementById('edit_category').value,
     status: document.getElementById('edit_status').value
   };
-  await fetch(`/subjects/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updatedSubject)
-  });
-  cancelSubjectEdit();
-  loadSubjects();
+  try {
+    await fetch(`/subjects/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedSubject)
+    });
+    cancelSubjectEdit();
+    await loadSubjects(); // reload all subjects
+  } catch (error) {
+    console.error("Error updating subject:", error);
+  }
 });
 
 // -------------------- CANCEL EDIT --------------------
@@ -138,8 +159,12 @@ function cancelSubjectEdit() {
 // -------------------- DELETE SUBJECT --------------------
 async function deleteSubject(id) {
   if (confirm('Are you sure you want to delete this subject?')) {
-    await fetch(`/subjects/${id}`, { method: 'DELETE' });
-    loadSubjects();
+    try {
+      await fetch(`/subjects/${id}`, { method: 'DELETE' });
+      await loadSubjects();
+    } catch (error) {
+      console.error("Error deleting subject:", error);
+    }
   }
 }
 

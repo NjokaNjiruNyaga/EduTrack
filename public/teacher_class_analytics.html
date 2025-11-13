@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduTrack | Class Analytics</title>
+  <link rel="stylesheet" href="../css/teacher.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>EduTrack</h2>
+      <ul>
+        <li><a href="teacher_dashboard.html">🏠 Home</a></li>
+        <li><a href="teacher_marks.html">📝 Enter Marks</a></li>
+        <li><a href="teacher_student_overview.html">👩‍🎓 Performance Overview</a></li>
+        <li><a href="teacher_analytics.html">📊 Subject Analytics</a></li>
+        <li><a href="teacher_class_analytics.html" class="active">🏫 Class Analytics</a></li>
+        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="analytics-section">
+        <h2>📈 Class Analytics Overview</h2>
+
+        <div class="summary-grid">
+          <div class="subject-card" id="classInfoCard">
+            <h4>Class Summary</h4>
+            <p><strong>Grade:</strong> <span id="teacherGrade">Loading...</span></p>
+            <p><strong>Exam:</strong> <span id="currentExam">Loading...</span></p>
+            <p><strong>Class Average:</strong> <span id="classAverage">Loading...</span></p>
+            <p><strong>Top Stream:</strong> <span id="topstream">Loading...</span></p>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-container">
+          <div class="chart-container">
+            <h4>📘 Subject Performance Comparison</h4>
+            <canvas id="subjectChart"></canvas>
+          </div>
+          <div class="chart-container">
+            <h4>🏫 Stream Comparison</h4>
+            <canvas id="streamChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Top Students -->
+        <div id="top-performers">
+          <h2>🏆 Top 5 Students</h2>
+          <table class="data-table" id="topStudentsTable">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Average Marks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="3" style="text-align:center; color:gray;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/teacherClassAnalytics.js"></script>
+  <script src="../js/logout.js"></script>
+</body>
+</html>

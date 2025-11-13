@@ -17,8 +17,10 @@
         <li><a href="admin_students.html">🎓 Manage Students</a></li>
         <li><a href="admin_subject.html">📚 Manage Subjects</a></li>
         <li><a href="admin_exams.html" class="active">📝 Manage Exams</a></li>
+        <li><a href="admin_teacher.html">👩‍🏫 Manage Teachers</a></li>
         <li><a href="#">⚙️ Settings</a></li>
-        <li><a href="login.html">🚪 Logout</a></li>
+        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+
       </ul>
     </aside>
 
@@ -34,8 +36,7 @@
         <form id="examForm">
           <input type="hidden" id="exam_id">
 
-          <!-- School ID -->
-          <input type="number" id="school_id" required placeholder="Enter School ID">
+          <!-- ✅ Removed School ID (auto-handled by JS/localStorage) -->
 
           <!-- Exam Type -->
           <select id="exam_type" required>
@@ -61,7 +62,7 @@
         <h3>Exams List</h3>
 
         <!-- Search Exam -->
-        <input type="text" id="searchExam" placeholder="Search by Exam ID, School ID, Type, or Term..." />
+        <input type="text" id="searchExam" placeholder="Search by Exam ID, Type, or Term..." />
 
         <table id="examsTable">
           <thead>
@@ -85,5 +86,7 @@
   </div>
 
   <script src="js/adminexams.js"></script>
+  <script src="js/logout.js"></script>
+
 </body>
 </html>

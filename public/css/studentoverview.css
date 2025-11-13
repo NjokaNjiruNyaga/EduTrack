@@ -1,0 +1,470 @@
+/* ===========================
+   Student Overview Styles
+=========================== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.data-table thead {
+  background: #2563eb;
+  border-bottom: 2px solid #1d4ed8;
+}
+
+.data-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: background 0.2s;
+}
+
+.data-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.data-table td {
+  padding: 16px;
+  vertical-align: middle;
+  position: relative;
+}
+
+/* ===========================
+   Student Info Column
+=========================== */
+.student-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* Gender colors */
+.student-avatar.male {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.student-avatar.female {
+  background: linear-gradient(135deg, #f5576c, #f093fb);
+}
+
+.student-info strong {
+  display: block;
+  color: #212529;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.student-info small {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+/* ===========================
+   Subjects Dropdown
+=========================== */
+.subject-btn {
+  padding: 6px 16px;
+  background: #e9ecef;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #495057;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.subject-btn:hover {
+  background: #dee2e6;
+}
+
+/* One ▼ icon */
+.subject-btn::after {
+  content: " ▼";
+  font-size: 11px;
+}
+
+.subject-dropdown {
+  position: absolute;
+  top: 73%;
+  left: 0;
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 8px 12px;
+  list-style: none;
+  margin: 0;
+  min-width: 180px;
+  z-index: 20;
+  display: none;
+  animation: fadeOut 0.15s ease-in-out;
+}
+
+.subject-dropdown.show {
+  display: block;
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+.subject-dropdown li {
+  font-size: 13px;
+  padding: 6px 0;
+  color: #343a40;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: default;
+}
+
+.subject-dropdown li:last-child {
+  border-bottom: none;
+}
+
+.subject-dropdown li:hover {
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+/* Smooth dropdown animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+
+/* ===========================
+   Grade & Class Labels
+=========================== */
+.class-label,
+.grade-display {
+  font-size: 14px;
+  color: #212529;
+  font-weight: 500;
+}
+
+/* ===========================
+   Performance Section
+=========================== */
+.performance-cell {
+  vertical-align: middle;
+  width: 220px;
+  min-width: 180px;
+}
+
+.perf-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  animation: perfFadeIn 220ms ease;
+}
+
+/* Compact performance box */
+.perf-box {
+  background: #ffffff;
+  border: 2px solid #2563eb;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-weight: 600;
+  font-size: 12px;
+  min-width: 75px;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* Performance pill */
+.perf-pill {
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.perf-percentage {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+  display: none;
+}
+
+@keyframes perfFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   Performance Colors
+=========================== */
+.perf-box.excellent,
+.perf-pill.excellent {
+  border-color: #28a745;
+  background: #d4edda;
+  color: #155724;
+}
+
+.perf-box.average,
+.perf-pill.average {
+  border-color: #ffc107;
+  background: #fff3cd;
+  color: #856404;
+}
+
+.perf-box.poor,
+.perf-pill.poor {
+  border-color: #dc3545;
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* ===========================
+   Actions
+=========================== */
+.view-details-btn {
+  padding: 8px 20px;
+  background: white;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.view-details-btn:hover {
+  background: #007bff;
+  color: white;
+}
+
+/* ===========================
+   Filters
+=========================== */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filters select,
+.filters button {
+  padding: 8px 16px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.filters button {
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.filters button:hover {
+  background: #0056b3;
+}
+
+/* ===========================
+   Responsive Adjustments
+=========================== */
+@media (max-width: 720px) {
+  .performance-cell { min-width: 140px; }
+  .perf-box { font-size: 12px; padding: 5px 8px; }
+  .perf-pill { font-size: 11px; padding: 4px 8px; }
+  .data-table th, .data-table td { padding: 10px; }
+}
+/* ===========================================================
+   📄 STUDENT REPORT MODAL STYLES
+=========================================================== */
+#studentReportModal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  width: 85%;
+  max-width: 1000px;
+  padding: 20px 25px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+.close:hover {
+  color: #e11d48;
+}
+
+/* ===========================================================
+   HEADER AND SUMMARY
+=========================================================== */
+#studentNameTitle {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #1e3a8a;
+  font-weight: 600;
+}
+
+.summary-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  justify-content: space-between;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+.summary-header p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* ===========================================================
+   REPORT TABLE STYLES
+=========================================================== */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.report-table thead {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.report-table th, 
+.report-table td {
+  padding: 10px 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 13px;
+  text-align: center;
+}
+
+.report-table th {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.report-table td {
+  color: #374151;
+}
+
+.report-table tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+/* ===========================================================
+   PRINT BUTTON
+=========================================================== */
+.print-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 5px;
+  float: right;
+}
+.print-btn:hover {
+  background: #1e40af;
+}
+
+/* ===========================================================
+   PERFORMANCE BOXES (from overview)
+=========================================================== */
+.perf-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.perf-box {
+  border: 2px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.perf-pill {
+  color: white;
+  font-size: 11px;
+  border-radius: 20px;
+  padding: 2px 8px;
+  text-align: center;
+  margin-bottom: 3px;
+}
+.perf-percentage {
+  font-size: 12px;
+  color: #374151;
+}

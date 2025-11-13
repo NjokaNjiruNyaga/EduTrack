@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduTrack | Teacher Dashboard</title>
+  <link rel="stylesheet" href="../css/teacher.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>EduTrack</h2>
+      <ul>
+        <li><a href="teacher_dashboard.html" class="active">🏠 Home</a></li>
+        <li><a href="teacher_marks.html">📝 Enter Marks</a></li>
+        <li><a href="teacher_student_overview.html">👩‍🎓 Performance Overview</a></li>
+        <li><a href="teacher_analytics.html">📊 Subject Analytics</a></li>
+         <li><a href="teacher_class_analytics.html">🏫 Class Analytics</a></li>
+        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Welcome Back, <span id="teacherName">Teacher</span> 👋</h1>
+          <p class="term">📅 Current Term: <span id="currentTerm">Loading...</span></p>
+        </div>
+        <div class="profile">
+          <div class="profile-circle" id="profileInitial">T</div>
+        </div>
+      </header>
+
+      <!-- Stats Section -->
+      <section class="stats">
+        <div class="stat-card">
+          <div class="stat-icon">📘</div>
+          <h3 id="subjectsCount">0</h3>
+          <p>Subjects Assigned</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏫</div>
+          <h3 id="classesCount">0</h3>
+          <p>Classes Handling</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👧🧒</div>
+          <h3 id="studentsCount">0</h3>
+          <p>Total Students</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📝</div>
+          <h3 id="examsCount">0</h3>
+          <p>Exams</p>
+        </div>
+      </section>
+
+      <!-- ===== Tabs Section ===== -->
+      <div class="tab-container">
+        <div class="quick-actions">
+          <button id="quickActionsBtn" class="quick-btn">⚡ Quick Actions</button>
+        </div>
+
+        <div class="tab-buttons hidden" id="tabButtons">
+          <button class="tab-btn" data-tab="subjects" onclick="showTab('subjects', event)">📚 My Subjects</button>
+          <button class="tab-btn" data-tab="class" onclick="showTab('class', event)">🏫 My Class</button>
+        </div>
+
+        <!-- 📚 My Subjects -->
+        <div id="subjects" class="tab-content hidden">
+          <h2>📚 My Subjects</h2>
+          <table id="subjectsTable" class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Grade</th>
+                <th>Stream</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- 🏫 My Class -->
+        <div id="class" class="tab-content hidden">
+          <h2>🏫 My Class</h2>
+          <table id="classesTable" class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Grade</th>
+                <th>Stream</th>
+                <th>Students</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 👩‍🏫 Students Modal -->
+  <div id="studentsModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="studentsModalTitle">👧 Students</h2>
+        <button class="close-btn" onclick="closeStudentsModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <table id="studentsTable" class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Admission No.</th>
+              <th>Gender</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/teacherhome.js"></script>
+  <script src="../js/logout.js"></script>
+</body>
+</html>

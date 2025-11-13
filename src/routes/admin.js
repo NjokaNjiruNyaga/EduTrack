@@ -3,8 +3,19 @@ const router = express.Router();
 const db = require('../config/db'); // DB connection
 const bcrypt = require('bcrypt');
 
+// ===================== MIDDLEWARE: CHECK ADMIN =====================
+function isAdmin(req, res, next) {
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ message: "Unauthorized. Please log in." });
+  }
+  if (req.session.user.role !== 'admin') {
+    return res.status(403).json({ message: "Access denied. Admins only." });
+  }
+  next();
+}
+
 // ===================== REGISTER USER =====================
-router.post('/users/register', async (req, res) => {
+router.post('/users/register', isAdmin, async (req, res) => {
   const { username, email, password, role, school_id } = req.body;
 
   if (!username || !email || !password || !role || !school_id) {
@@ -16,10 +27,13 @@ router.post('/users/register', async (req, res) => {
   }
 
   try {
-    // Check if email already exists
-    const [existing] = await db.promise().query("SELECT * FROM users WHERE email = ?", [email]);
+    // Check if email already exists in this school
+    const [existing] = await db.promise().query(
+      "SELECT * FROM users WHERE email = ? AND school_id = ?",
+      [email, school_id]
+    );
     if (existing.length > 0) {
-      return res.status(400).json({ message: "Email already exists" });
+      return res.status(400).json({ message: "Email already exists in this school" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -35,17 +49,19 @@ router.post('/users/register', async (req, res) => {
   }
 });
 
-// ===================== GET ALL USERS (with optional search) =====================
-router.get('/users', async (req, res) => {
+// ===================== GET ALL USERS (with optional search, per school) =====================
+router.get('/users', isAdmin, async (req, res) => {
   try {
+    const school_id = req.query.school_id; // ✅ from frontend
     const searchQuery = req.query.q || '';
-    let sql = "SELECT user_id, username, email, role, school_id FROM users";
-    let params = [];
+
+    let sql = "SELECT user_id, username, email, role, school_id FROM users WHERE school_id = ?";
+    let params = [school_id];
 
     if (searchQuery) {
-      sql += " WHERE username LIKE ? OR email LIKE ? OR role LIKE?";
+      sql += " AND (username LIKE ? OR email LIKE ? OR role LIKE ?)";
       const likeQuery = `%${searchQuery}%`;
-      params = [likeQuery, likeQuery, likeQuery];
+      params.push(likeQuery, likeQuery, likeQuery);
     }
 
     const [results] = await db.promise().query(sql, params);
@@ -57,7 +73,7 @@ router.get('/users', async (req, res) => {
 });
 
 // ===================== UPDATE USER =====================
-router.put('/users/:id', async (req, res) => {
+router.put('/users/:id', isAdmin, async (req, res) => {
   const { username, email, role, school_id } = req.body;
   const userId = req.params.id;
 
@@ -70,18 +86,19 @@ router.put('/users/:id', async (req, res) => {
   }
 
   try {
-    // Check if another user has this email
+    // Check if another user in this school has this email
     const [existing] = await db.promise().query(
-      "SELECT * FROM users WHERE email = ? AND user_id != ?",
-      [email, userId]
+      "SELECT * FROM users WHERE email = ? AND user_id != ? AND school_id = ?",
+      [email, userId, school_id]
     );
     if (existing.length > 0) {
-      return res.status(400).json({ message: "Email already exists" });
+      return res.status(400).json({ message: "Email already exists in this school" });
     }
 
-    const sql = "UPDATE users SET username = ?, email = ?, role = ?, school_id = ? WHERE user_id = ?";
-    db.query(sql, [username, email, role, school_id, userId], (err) => {
+    const sql = "UPDATE users SET username = ?, email = ?, role = ? WHERE user_id = ? AND school_id = ?";
+    db.query(sql, [username, email, role, userId, school_id], (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
+      if (result.affectedRows === 0) return res.status(404).json({ message: "User not found in this school" });
       res.json({ message: "✅ User updated successfully" });
     });
   } catch (err) {
@@ -91,21 +108,26 @@ router.put('/users/:id', async (req, res) => {
 });
 
 // ===================== DELETE USER =====================
-router.delete('/users/:id', (req, res) => {
-  const sql = "DELETE FROM users WHERE user_id = ?";
-  db.query(sql, [req.params.id], (err) => {
+router.delete('/users/:id', isAdmin, (req, res) => {
+  const school_id = req.query.school_id; // ✅ make sure only from the same school
+
+  const sql = "DELETE FROM users WHERE user_id = ? AND school_id = ?";
+  db.query(sql, [req.params.id, school_id], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
+    if (result.affectedRows === 0) return res.status(404).json({ message: "User not found in this school" });
     res.json({ message: "🗑️ User deleted successfully" });
   });
 });
 
-// ===================== DASHBOARD STATS =====================
-router.get('/stats', async (req, res) => {
+// ===================== DASHBOARD STATS (per school) =====================
+router.get('/stats', isAdmin, async (req, res) => {
   try {
-    const [users] = await db.promise().query("SELECT COUNT(*) AS totalUsers FROM users WHERE role != 'admin'");
-    const [students] = await db.promise().query("SELECT COUNT(*) AS totalStudents FROM users WHERE role = 'student'");
-    const [teachers] = await db.promise().query("SELECT COUNT(*) AS totalTeachers FROM users WHERE role = 'teacher'");
-    const [parents] = await db.promise().query("SELECT COUNT(*) AS totalParents FROM users WHERE role = 'parent'");
+    const school_id = req.query.school_id;
+
+    const [users] = await db.promise().query("SELECT COUNT(*) AS totalUsers FROM users WHERE role != 'admin' AND school_id = ?", [school_id]);
+    const [students] = await db.promise().query("SELECT COUNT(*) AS totalStudents FROM users WHERE role = 'student' AND school_id = ?", [school_id]);
+    const [teachers] = await db.promise().query("SELECT COUNT(*) AS totalTeachers FROM users WHERE role = 'teacher' AND school_id = ?", [school_id]);
+    const [parents] = await db.promise().query("SELECT COUNT(*) AS totalParents FROM users WHERE role = 'parent' AND school_id = ?", [school_id]);
 
     res.json({
       totalUsers: users[0].totalUsers,

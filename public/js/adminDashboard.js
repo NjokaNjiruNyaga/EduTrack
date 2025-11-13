@@ -3,11 +3,12 @@
 let usersData = []; // store fetched users globally
 let currentPage = 1;
 const rowsPerPage = 5; // adjust as needed
+const schoolId = localStorage.getItem("school_id"); // ✅ get school from login
 
 // Fetch and display all users
 async function loadUsers() {
   try {
-    const res = await fetch('/admin/users');
+    const res = await fetch(`/admin/users?school_id=${schoolId}`); // ✅ filter by school
     usersData = await res.json(); // save all users globally
     currentPage = 1; // reset page when data loads
     displayUsers();
@@ -43,7 +44,7 @@ function displayUsers(searchText = '') {
         <td>${user.role}</td>
         <td>${user.school_id}</td>
         <td>
-          <button onclick="startEdit(${user.user_id}, '${encodedUsername}', '${encodedEmail}', '${user.role}', ${user.school_id})">✏️ Edit</button>
+          <button onclick="startEdit(${user.user_id}, '${encodedUsername}', '${encodedEmail}', '${user.role}')">✏️ Edit</button>
           <button onclick="deleteUser(${user.user_id})">🗑️ Delete</button>
         </td>
       </tr>
@@ -93,7 +94,6 @@ document.getElementById('addUserForm').addEventListener('submit', async (e) => {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
   const role = document.getElementById('role').value;
-  const school_id = parseInt(document.getElementById('school_id').value, 10);
 
   if (!email.includes('@')) {
     alert('Please enter a valid email.');
@@ -109,7 +109,7 @@ document.getElementById('addUserForm').addEventListener('submit', async (e) => {
     const res = await fetch('/admin/users/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password, role, school_id })
+      body: JSON.stringify({ username, email, password, role, school_id: schoolId }) // ✅ attach school
     });
 
     const data = await res.json();
@@ -137,13 +137,12 @@ async function deleteUser(userId) {
 }
 
 // ===================== EDIT USER =====================
-function startEdit(user_id, username, email, role, school_id) {
+function startEdit(user_id, username, email, role) {
   document.getElementById('editSection').style.display = 'block';
   document.getElementById('edit_user_id').value = user_id;
   document.getElementById('edit_username').value = decodeURIComponent(username);
   document.getElementById('edit_email').value = decodeURIComponent(email);
   document.getElementById('edit_role').value = role;
-  document.getElementById('edit_school_id').value = school_id;
 }
 
 function cancelEdit() {
@@ -158,7 +157,6 @@ document.getElementById('editUserForm').addEventListener('submit', async (e) => 
   const username = document.getElementById('edit_username').value.trim();
   const email = document.getElementById('edit_email').value.trim();
   const role = document.getElementById('edit_role').value;
-  const school_id = parseInt(document.getElementById('edit_school_id').value, 10);
 
   if (!email.includes('@')) {
     alert('Please enter a valid email.');
@@ -174,7 +172,7 @@ document.getElementById('editUserForm').addEventListener('submit', async (e) => 
     const res = await fetch(`/admin/users/${user_id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, role, school_id })
+      body: JSON.stringify({ username, email, role, school_id: schoolId }) // ✅ attach school
     });
 
     const data = await res.json();
@@ -189,7 +187,7 @@ document.getElementById('editUserForm').addEventListener('submit', async (e) => 
 
 // ===================== STATS =====================
 function fetchStats() {
-  fetch("/admin/stats")
+  fetch(`/admin/stats?school_id=${schoolId}`) // ✅ per school stats
     .then(res => res.json())
     .then(data => {
       document.getElementById("totalUsers").innerText = data.totalUsers || 0;
@@ -199,3 +197,25 @@ function fetchStats() {
     })
     .catch(err => console.error("Error loading stats:", err));
 }
+
+// ===================== LOGOUT =====================
+async function logout() {
+  try {
+    const res = await fetch('/auth/logout', {
+      method: 'POST',
+      credentials: 'include' // ✅ include session cookie
+    });
+
+    if (res.redirected) {
+      window.location.href = res.url; // ✅ follow backend redirect
+    } else {
+      window.location.href = "/"; // fallback: send to school selection
+    }
+  } catch (err) {
+    console.error("Logout error:", err);
+    alert("Logout failed. Try again.");
+  }
+}
+
+// Attach logout button event listener
+document.getElementById("logoutBtn").addEventListener("click", logout);

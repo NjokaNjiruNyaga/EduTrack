@@ -1,0 +1,171 @@
+/* box for marks, mean, performance  */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Container help what it is the right to be properly structured */
+.container {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f8;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 230px;
+  background: #2c3e50;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar h2 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: #34495e;
+}
+
+
+/* Main content */
+.content {
+  flex: 1;
+  padding: 30px;
+  background: #f4f6f8;
+}
+
+/* Header Box */
+.header-box {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.header-box h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.header-box p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Report Section */
+.report {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.report h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+/* Summary Card */
+.summary-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.summary-card p {
+  background: #e6f0ff;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #1a3d7c;
+  flex: 1 1 200px;
+  text-align: center;
+}
+
+/* Table */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.report-table th,
+.report-table td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.report-table th {
+  background: #f0f4f8;
+  color: #333;
+  font-weight: 600;
+}
+
+.report-table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.report-table tr:hover {
+  background: #f1f5f9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .sidebar ul {
+    display: flex;
+    gap: 15px;
+  }
+
+  .sidebar ul li {
+    margin-bottom: 0;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .summary-card {
+    flex-direction: column;
+  }
+}

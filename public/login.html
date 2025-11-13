@@ -7,20 +7,24 @@
 </head>
 <body>
   <div class="container">
-    <!-- Dynamic school name will be loaded here -->
     <h1 id="schoolName">EduTrack Login</h1>
     <p id="schoolMessage">Loading school details...</p>
 
-    <!-- Login form -->
     <form id="loginForm" method="POST">
       <input type="text" name="username" placeholder="Enter Username" required>
       <input type="password" name="password" placeholder="Enter Password" required>
       <button type="submit">Login</button>
+
+      <!-- ✅ NEW: Forgot Password Link -->
+      <p style="margin-top: 10px;">
+        <a href="forgotpassword.html" style="color:#007bff; text-decoration:none;">
+          Forgot Password?
+        </a>
+      </p>
     </form>
   </div>
 
   <script>
-    // Extract school_id from URL query (e.g., login.html?school_id=1)
     const params = new URLSearchParams(window.location.search);
     const schoolId = params.get("school_id");
 
@@ -28,7 +32,7 @@
       document.getElementById("schoolMessage").innerText = "❌ No school selected. Go back and choose a school.";
       document.getElementById("loginForm").style.display = "none";
     } else {
-      // Fetch school details from backend (full URL with port 5000)
+
       fetch(`http://localhost:5000/schools/${schoolId}`)
         .then(res => res.json())
         .then(data => {
@@ -45,7 +49,6 @@
           document.getElementById("schoolMessage").innerText = "⚠️ Could not load school details.";
         });
 
-      // Handle login form submission
       document.getElementById("loginForm").addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -56,18 +59,22 @@
         };
 
         try {
-          // Send login request (full URL with port 5000)
           const res = await fetch("http://localhost:5000/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            credentials: "include"
           });
 
-          console.log("Response status:", res.status);   // debugging
           const result = await res.json();
-          console.log("Login result:", result);          // debugging
+          console.log("Login result:", result);
 
           if (res.ok) {
+            localStorage.setItem("school_id", schoolId);
+            localStorage.setItem("user_id", result.user_id);
+            localStorage.setItem("username", result.username);
+            localStorage.setItem("role", result.role);
+
             alert(`✅ Login successful. Redirecting to ${result.role} dashboard...`);
             window.location.href = `/${result.role}_dashboard.html`;
           } else {

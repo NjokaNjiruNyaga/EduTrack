@@ -11,16 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
   const rowsPerPage = 5;
 
+  // ✅ Get school_id from localStorage (set at login)
+  const schoolId = localStorage.getItem('school_id');
+  if (!schoolId) {
+    alert("⚠️ No school ID found. Please login again.");
+    window.location.href = "login.html";
+    return;
+  }
+
   // ------------------ Fetch Exams ------------------
   async function loadExams() {
     try {
-      const res = await fetch('/exams');
-      const data = await res.json();
-      if (!Array.isArray(data)) {
-        console.error('Exams data is not an array:', data);
+      const res = await fetch(`/exams?school_id=${schoolId}`);
+      const result = await res.json();
+
+      if (!Array.isArray(result.data)) {
+        console.error('Exams data is not an array:', result);
         return;
       }
-      examsData = data;
+
+      examsData = result.data;
       currentPage = 1;
       displayExams();
     } catch (err) {
@@ -34,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filtered = examsData.filter(exam =>
       exam.exam_id.toString().includes(searchText) ||
-      exam.school_id.toString().includes(searchText) ||
       exam.exam_type.toLowerCase().includes(searchText.toLowerCase()) ||
       exam.term.toString().includes(searchText)
     );
@@ -89,17 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
   examForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const school_id = Number(document.getElementById('school_id').value);
     const exam_type = document.getElementById('exam_type').value.trim();
     const term = Number(document.getElementById('exam_term').value);
 
-    if (!school_id || !exam_type || !term) {
+    if (!exam_type || !term) {
       alert('Please fill in all fields.');
       return;
     }
 
-    const payload = { school_id, exam_type, term };
-    const url = editingExamId ? `/exams/${editingExamId}` : '/exams';
+    const payload = { school_id: Number(schoolId), exam_type, term };
+    const url = editingExamId ? `/exams/${editingExamId}?school_id=${schoolId}` : '/exams';
     const method = editingExamId ? 'PUT' : 'POST';
 
     try {
@@ -129,11 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------ Edit Exam ------------------
   window.editExam = async (examId) => {
     try {
-      const res = await fetch(`/exams/${examId}`);
+      const res = await fetch(`/exams/${examId}?school_id=${schoolId}`);
       const exam = await res.json();
       editingExamId = examId;
 
-      document.getElementById('school_id').value = exam.school_id;
       document.getElementById('exam_type').value = exam.exam_type;
       document.getElementById('exam_term').value = exam.term;
 
@@ -157,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!confirm('Are you sure you want to delete this exam?')) return;
 
     try {
-      const res = await fetch(`/exams/${examId}`, { method: 'DELETE' });
+      const res = await fetch(`/exams/${examId}?school_id=${schoolId}`, { method: 'DELETE' });
       const data = await res.json();
 
       if (data.success) {
